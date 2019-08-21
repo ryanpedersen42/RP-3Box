@@ -1,0 +1,30 @@
+.header {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  border-style: solid;
+  border-color: royalblue;
+
+  .options {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 25px;
+    
+    .option {
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+  }
+
+  .logo {
+    width: 15%;
+    height: 90%;
+    padding-left: 10px;
+    align-items: left;
+  }
+}
