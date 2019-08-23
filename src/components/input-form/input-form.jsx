@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import SecretList from '../secret-list/secret-list';
+// import SecretList from '../secret-list/secret-list';
+import FormInput from '../form-input/form-input';
 
 const Box = require('3box')
 
@@ -12,16 +13,16 @@ class InputForm extends Component {
     }
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target
-    this.setState({[name]: value})
-  }  
+  // handleChange = (event) => {
+  //   const { name, value } = event.target
+  //   this.setState({[name]: value})
+  // }  
 
-  listSpaces = () => {
-    const { myAddress } = this.props;
-    // const userSpaces = await Box.listSpaces(myAddress)
-    console.log(Box.listSpaces(myAddress))
-  }
+  // listSpaces = () => {
+  //   const { myAddress } = this.props;
+  //   // const userSpaces = await Box.listSpaces(myAddress)
+  //   console.log(Box.listSpaces(myAddress))
+  // }
 
   onSubmit = async (event) => {
     event.preventDefault()
@@ -37,26 +38,31 @@ class InputForm extends Component {
   }
 
   render() {
-    const { privateLogs, selectedSpace, userProfile, ethAddress } = this.props;
+    // const { ethAddress } = this.props
     return (
       <div>
         <form>
-          {/* <p>key</p>
-          <input
-            type='text'
-            onChange={this.handleChange}
-            name='key'
+          <FormInput 
+            name='key' 
+            label='key'
+            value={this.state.key}
+            handleChange={this.handleChange}
+            required
             />
-            <p>value</p>
-            <input
-            type='text'
-            onChange={this.handleChange}
-            name='value'
+          <FormInput 
+            name='value' 
+            label='value'
+            value={this.state.value} 
+            handleChange={this.handleChange}
+            required
             />
-            <button onClick={this.onSubmit}>submit</button> */}
+              <button 
+                type='submit'
+                className='custom-button'
+                >
+                Submit
+              </button>
         </form>
-            {/* <button onClick={this.getSpaceCall}>get space call</button>
-            <button onClick={this.listSpaces}>list spaces</button> */}
       </div>
     )
   }

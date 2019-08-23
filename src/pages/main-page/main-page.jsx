@@ -24,17 +24,19 @@ const MainPage = ({ ethAddress, userProfile, box, privateLogs, spaceOptions, cha
           changeSelectedSpace={changeSelectedSpace}
           selectedSpace={selectedSpace}
          />
-        <InputForm 
-          ethAddress={ethAddress}
-          userProfile={userProfile}
-          box={box}
-          selectedSpace={selectedSpace}
-          privateLogs={privateLogs}
-         />
+         <div className='input-form'>
+          <InputForm 
+            ethAddress={ethAddress}
+            userProfile={userProfile}
+            box={box}
+            selectedSpace={selectedSpace}
+            privateLogs={privateLogs}
+          />
         </div>
          <SecretList 
            privateLogs={privateLogs}
          />
+        </div>
   </React.Fragment>
 );
 

@@ -32,7 +32,6 @@ class App extends Component {
     // if you haven't authenticated, keep authentication screen up
     if (!box) history.push('/');
     this.setState({ isAppReady: true });
-
   }
 
   handleLogin = async () => {
