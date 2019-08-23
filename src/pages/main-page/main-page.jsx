@@ -1,40 +1,41 @@
-import { tsPropertySignature } from "@babel/types";
-
-import React, { Component } from 'react';
+import React from 'react';
 import ProfileHover from 'profile-hover';
 
 import InputForm from '../../components/input-form/input-form';
 import Header from '../../components/header/header';
 import SecretList from '../../components/secret-list/secret-list';
+import DropDown from '../../components/dropdown-selector/dropdown-selector';
 
-class MainPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+import './main-page.styles.scss';
 
-  // componentDidMount() {
-  //   console.log('second tier', this.props.privateSpaces[0])
-  // }
-
-  render() {
-    const { myAddress, myProfile, box, privateSpaces } = this.props;
-    return (
-      <React.Fragment>
-        {/* <ProfileHover myAddress={myAddress}/> */}
-        <Header
-        myAddress={myAddress}
-        box={box}
-        />
-        <InputForm 
-          myAddress={myAddress}
-          myProfile={myProfile}
+const MainPage = ({ ethAddress, userProfile, box, privateLogs, spaceOptions, changeSelectedSpace, selectedSpace }) => (
+  <React.Fragment>
+          <Header
+          ethAddress={ethAddress}
           box={box}
-          privateSpaces={privateSpaces}
+        />
+      <div className='main-page'>
+      {selectedSpace}
+        <div className='profile-hover'>
+          <ProfileHover address={ethAddress} showName/>
+        </div>
+        <DropDown 
+          spaceOptions={spaceOptions}
+          changeSelectedSpace={changeSelectedSpace}
+          selectedSpace={selectedSpace}
          />
-         <SecretList />
-      </React.Fragment>
-    )
-  }
-}
+        <InputForm 
+          ethAddress={ethAddress}
+          userProfile={userProfile}
+          box={box}
+          selectedSpace={selectedSpace}
+          privateLogs={privateLogs}
+         />
+        </div>
+         <SecretList 
+           privateLogs={privateLogs}
+         />
+  </React.Fragment>
+);
 
 export default MainPage;

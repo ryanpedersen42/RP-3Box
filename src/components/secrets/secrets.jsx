@@ -1,13 +1,19 @@
 import React from 'react';
 
+import './secrets.styles.scss';
+
 const Secrets = ({ value, major }) => {
   return (
-    <div> 
-    {
-      <div className='collection-footer'>
-        <span className='price'>{major}: {value}</span>
-      </div>
-    }
+      <div className='checkout-item'>
+        <span className='key'>
+          {major}
+        </span>
+        <span className='value'>
+          {value}
+        </span>
+        <span>
+          x
+        </span>
     </div>
   )
 };

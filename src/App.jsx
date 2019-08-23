@@ -16,12 +16,12 @@ class App extends Component {
     super(props);
     this.state = {
       box: null,
-      myAddress: '',
-      myDid: '',
-      myProfile: {},
+      ethAddress: '',
+      userProfile: {},
       isAppReady: false,
       privateSpaces: [],
-      isComponentReady: false,
+      spaceOptions: [],      
+      selectedSpace: '',
     };
   }
 
@@ -29,41 +29,41 @@ class App extends Component {
     const { box } = this.state;
     const { history } = this.props;
 
-    // if you haven't openedBox, return to login
+    // if you haven't authenticated, keep authentication screen up
     if (!box) history.push('/');
     this.setState({ isAppReady: true });
+
   }
 
   handleLogin = async () => {
     const { history } = this.props
-    const addresses = await window.ethereum.enable();
-    const myAddress = addresses[0];
-    
-    // get my box and profile
-    const box = await Box.openBox(myAddress);
-    const myProfile = await Box.getProfile(myAddress);
 
-    // set all to state and continue
+    //web3 actions to authenticate with metamask or other provider
+    const ethAddresses = await window.ethereum.enable();
+    const ethAddress = ethAddresses[0];
+    
+    // authenticate and get profile data
+    const box = await Box.openBox(ethAddress);
+    const userProfile = await Box.getProfile(ethAddress);
+
+    const spaceOptions = await Box.listSpaces(ethAddress)
+    const dappStorage = await box.openSpace(spaceOptions[2])
+    const privateLogs = await dappStorage.private.log
+    
+    //promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
 
-    const testDapp = await box.openSpace('testDapp')
-    const privateSpaces = await testDapp.private.log
-
     // set all to state and continue
-    await this.setState({ box, myProfile, myAddress, privateSpaces, isAppReady: true});
-    // console.log('privatespace', this.state.privateSpaces)
+    await this.setState({ box, userProfile, ethAddress, privateLogs, spaceOptions, selectedSpace: spaceOptions[2] });
     history.push('/chat');
   }
 
+  changeSelectedSpace = (event) => {
+    this.setState({ selectedSpace: event.target.value});
+  }
+
   render() {
-    const {
-      isAppReady,
-      myProfile,
-      myAddress,
-      box,
-      privateSpaces,
-      // myDid
-    } = this.state;
+    const { isAppReady, userProfile, ethAddress, box, privateLogs, spaceOptions, selectedSpace } = this.state;
 
     return (
       <div className="App">
@@ -76,7 +76,6 @@ class App extends Component {
               render={() => (
               <AuthPage handleLogin={this.handleLogin} />
               )}
-
             />
 
             <Route
@@ -84,10 +83,13 @@ class App extends Component {
               path='/chat'
               render={() => (
                 <MainPage 
-                  myAddress={myAddress}
-                  myProfile={myProfile}
+                  ethAddress={ethAddress}
+                  userProfile={userProfile}
                   box={box}
-                  privateSpaces={privateSpaces}
+                  privateLogs={privateLogs}
+                  spaceOptions={spaceOptions}
+                  selectedSpace={selectedSpace}
+                  changeSelectedSpace={this.changeSelectedSpace}
                 />
               )}
             />

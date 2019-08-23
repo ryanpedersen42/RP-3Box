@@ -4,8 +4,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 25px;
-  border-style: solid;
-  border-color: royalblue;
+  background-color: royalblue;
 
   .options {
     width: 50%;
@@ -24,7 +23,9 @@
   .logo {
     width: 15%;
     height: 90%;
+    color: white;
     padding-left: 10px;
+    padding-top: 20px;
     align-items: left;
   }
 }
