@@ -1,71 +1,41 @@
-import React, { Component } from 'react';
-// import SecretList from '../secret-list/secret-list';
+import React from 'react';
 import FormInput from '../form-input/form-input';
 
-const Box = require('3box')
+const InputForm = ({ onSubmit, inputValue, handleKeyChange, handleValueChange, inputKey, deleteSecret }) => {
 
-class InputForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      key: '',
-      value: '',
-    }
+  const handleChange1 = (e) => {
+    handleKeyChange(e.target.value);
   }
 
-  // handleChange = (event) => {
-  //   const { name, value } = event.target
-  //   this.setState({[name]: value})
-  // }  
-
-  // listSpaces = () => {
-  //   const { myAddress } = this.props;
-  //   // const userSpaces = await Box.listSpaces(myAddress)
-  //   console.log(Box.listSpaces(myAddress))
-  // }
-
-  onSubmit = async (event) => {
-    event.preventDefault()
-
-    const { testDapp, key, value } = this.state;
-
-    await testDapp.private.set(key, value)
-    console.log('key:', key, 'value', value)
+  const handleChange2 = (e) => {
+    handleValueChange(e.target.value);
   }
-
-  deleteSpace = async () => {
-    // private.remove(space, key)
-  }
-
-  render() {
-    // const { ethAddress } = this.props
-    return (
-      <div>
-        <form>
-          <FormInput 
-            name='key' 
-            label='key'
-            value={this.state.key}
-            handleChange={this.handleChange}
-            required
-            />
-          <FormInput 
-            name='value' 
-            label='value'
-            value={this.state.value} 
-            handleChange={this.handleChange}
-            required
-            />
-              <button 
-                type='submit'
-                className='custom-button'
-                >
-                Submit
-              </button>
-        </form>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <form>
+        <FormInput 
+          name='key' 
+          label='key'
+          input={inputKey}
+          onChange={handleChange1}
+          required
+          />
+        <FormInput 
+          name='value' 
+          label='value'
+          value={inputValue}
+          onChange={handleChange2}
+          required
+          />
+            <button 
+              className='custom-button'
+              onClick={deleteSecret}
+            >
+              Submit
+            </button>
+      </form>
+    </div>
+  )
 }
 
 export default InputForm;

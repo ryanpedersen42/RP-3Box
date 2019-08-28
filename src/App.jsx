@@ -22,6 +22,10 @@ class App extends Component {
       privateSpaces: [],
       spaceOptions: [],      
       selectedSpace: '',
+      privateLogs: [],
+      dappStorage: [],
+      inputKey: '',
+      inputValue: '',
     };
   }
 
@@ -42,27 +46,77 @@ class App extends Component {
     const ethAddress = ethAddresses[0];
     
     // authenticate and get profile data
-    const box = await Box.openBox(ethAddress);
+    const box = await Box.openBox(ethAddress, window.ethereum, {});
     const userProfile = await Box.getProfile(ethAddress);
 
+    //get list of spaces and open a space
     const spaceOptions = await Box.listSpaces(ethAddress)
     const dappStorage = await box.openSpace(spaceOptions[2])
-    const privateLogs = await dappStorage.private.log
+    
+    //get logs of actions
+    const privateLogs = await dappStorage.public.log
     
     //promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
 
+    console.log(await Box.listSpaces(ethAddress))
+
     // set all to state and continue
-    await this.setState({ box, userProfile, ethAddress, privateLogs, spaceOptions, selectedSpace: spaceOptions[2] });
-    history.push('/chat');
+    await this.setState({ box, userProfile, ethAddress, dappStorage, privateLogs, spaceOptions, selectedSpace: spaceOptions[2] });
+    history.push('/main');
+  }
+
+  handleKeyChange = (key) => {
+    this.setState({inputKey: key})
+  } 
+
+  handleValueChange = (value) => {
+    this.setState({value: value})
+  } 
+
+  onSubmit = async () => {
+    const { history } = this.props;
+    const { inputKey, value, dappStorage } = this.state;
+
+    await dappStorage.public.set(inputKey, value)
+    console.log('worked')
+    history.push('/main');
+  }
+
+  createNewSpace = async () => {
+    const { inputKey, ethAddress, box } = this.state;
+    console.log('clicked')
+
+    await box.openSpace(inputKey)
+    console.log(await Box.listSpaces(ethAddress))
   }
 
   changeSelectedSpace = (event) => {
     this.setState({ selectedSpace: event.target.value});
   }
 
+  // createNewSpace = async () => {
+  //   const { keyValue, box } = this.state;
+
+  //   try {
+  //     await box.openSpace(keyValue)
+  //   } catch(err) {
+  //     console.log(err)
+  //   }
+  // }
+
+  deleteSecret = async () => {
+    const { keyValue, dappStorage } = this.state;
+
+    try {
+      await dappStorage.public.remove(keyValue);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+ 
   render() {
-    const { isAppReady, userProfile, ethAddress, box, privateLogs, spaceOptions, selectedSpace } = this.state;
+    const { isAppReady, userProfile, inputKey, inputValue, ethAddress, box, privateLogs, spaceOptions, dappStorage, selectedSpace } = this.state;
 
     return (
       <div className="App">
@@ -79,7 +133,7 @@ class App extends Component {
 
             <Route
               exact
-              path='/chat'
+              path='/main'
               render={() => (
                 <MainPage 
                   ethAddress={ethAddress}
@@ -87,8 +141,16 @@ class App extends Component {
                   box={box}
                   privateLogs={privateLogs}
                   spaceOptions={spaceOptions}
+                  inputKey={inputKey}
+                  inputValue={inputValue}
+                  dappStorage={dappStorage}
                   selectedSpace={selectedSpace}
+                  onSubmit={this.onSubmit}
+                  handleValueChange={this.handleValueChange}
+                  handleKeyChange={this.handleKeyChange}
+                  createNewSpace={this.createNewSpace}
                   changeSelectedSpace={this.changeSelectedSpace}
+                  deleteSecret={this.deleteSecret}
                 />
               )}
             />

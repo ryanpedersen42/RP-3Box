@@ -2,16 +2,16 @@ import React from 'react';
 
 import './secrets.styles.scss';
 
-const Secrets = ({ value, major }) => {
+const Secrets = ({ value, major, deleteSecret }) => {
   return (
       <div className='checkout-item'>
         <span className='key'>
           {major}
         </span>
         <span className='value'>
-          {value}
+          {JSON.stringify(value)}
         </span>
-        <span>
+        <span onClick={() => deleteSecret}>
           x
         </span>
     </div>

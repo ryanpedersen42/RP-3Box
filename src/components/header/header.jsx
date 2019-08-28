@@ -3,12 +3,11 @@ import React from 'react';
 
 import './header.styles.scss';
 
-const Header = ({ ethAddress, box }) => {
+const Header = () => {
   return (
     <div className='header'>
       <div className='logo'>
       3DropBox
-      {/* <ProfileHover address={ethAddress}/> */}
       </div>
       <div className='options'>
         <a to='/' href='mygithubrepo'>github</a>
