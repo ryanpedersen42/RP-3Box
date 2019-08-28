@@ -13,10 +13,6 @@ class SecretList extends Component {
     }
   };
 
-  componentDidMount() {
-
-  }
-
   render() {
     const { privateLogs } = this.props;
       return (

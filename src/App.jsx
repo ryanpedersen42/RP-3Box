@@ -106,10 +106,10 @@ class App extends Component {
   // }
 
   deleteSecret = async () => {
-    const { keyValue, dappStorage } = this.state;
+    const { inputKey, dappStorage } = this.state;
 
     try {
-      await dappStorage.public.remove(keyValue);
+      await dappStorage.public.remove(inputKey);
     } catch(err) {
       console.log(err);
     }

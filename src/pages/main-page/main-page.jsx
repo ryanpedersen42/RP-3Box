@@ -35,10 +35,10 @@ const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleValueChan
             deleteSecret={deleteSecret}
           />
         </div>
-         <SecretList 
+         {/* <SecretList 
            privateLogs={privateLogs}
            deleteSecret={deleteSecret}
-         />
+         /> */}
         </div>
   </React.Fragment>
 );
