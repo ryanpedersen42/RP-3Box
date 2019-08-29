@@ -32,7 +32,7 @@ $main-color: black;
       @include shrinkLabel();
     }
   }
-
+  
   .form-input-label {
     color: $sub-color;
     font-size: 16px;

@@ -1,18 +1,23 @@
 import React from 'react';
+import FormInput from '../form-input/form-input';
 
-const CreateSpace = ({ createNewSpace, handleKeyChange }) => {
+import './create-new-space.styles.scss';
+
+const CreateSpace = ({ createNewSpace, handleKeyChange, displayValue }) => {
 
   const handleChange = (e) => {
-    // console.log(e.target.value)
     handleKeyChange(e.target.value);
   }
 
   return (
   <div>
-    <input
+    <h3 className='section-header'>Create New Space</h3>
+    <FormInput
       onChange={handleChange}
+      label='new space'
     />
-    <button onClick={createNewSpace}>create new space</button> 
+    <button className='custom-button' onClick={createNewSpace}>create new space</button> 
+    {displayValue}
   </div>
 
   )

@@ -12,7 +12,7 @@ const InputForm = ({ onSubmit, inputValue, handleKeyChange, handleValueChange, i
   }
   return (
     <div>
-      <form>
+      <h3 className='section-header'>Add New Secret</h3>
         <FormInput 
           name='key' 
           label='key'
@@ -29,11 +29,10 @@ const InputForm = ({ onSubmit, inputValue, handleKeyChange, handleValueChange, i
           />
             <button 
               className='custom-button'
-              onClick={deleteSecret}
+              onClick={onSubmit}
             >
               Submit
             </button>
-      </form>
     </div>
   )
 }

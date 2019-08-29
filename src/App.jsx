@@ -7,7 +7,7 @@ import {
 
 import AuthPage from './pages/auth/auth-page';
 import MainPage from './pages/main-page/main-page';
-import './App.css';
+import './App.styles.scss';
 
 const Box = require('3box')
 
@@ -26,6 +26,8 @@ class App extends Component {
       dappStorage: [],
       inputKey: '',
       inputValue: '',
+      newSpaceName: '',
+      displayValue: '',
     };
   }
 
@@ -51,38 +53,54 @@ class App extends Component {
 
     //get list of spaces and open a space
     const spaceOptions = await Box.listSpaces(ethAddress)
+
+    //TODO: make this dymanic 
     const dappStorage = await box.openSpace(spaceOptions[2])
-    
-    //get logs of actions
-    const privateLogs = await dappStorage.public.log
     
     //promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
 
-    console.log(await Box.listSpaces(ethAddress))
-
     // set all to state and continue
-    await this.setState({ box, userProfile, ethAddress, dappStorage, privateLogs, spaceOptions, selectedSpace: spaceOptions[2] });
+    await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[2] });
     history.push('/main');
   }
 
+  //change the key field for input
   handleKeyChange = (key) => {
     this.setState({inputKey: key})
   } 
 
+  handleNameChange = (name) => {
+    this.setState({newSpaceName: name})
+  }
+
+  //chanve value field for input
   handleValueChange = (value) => {
     this.setState({value: value})
   } 
 
+  //onsubmit new input / key pair
   onSubmit = async () => {
     const { history } = this.props;
     const { inputKey, value, dappStorage } = this.state;
 
     await dappStorage.public.set(inputKey, value)
     console.log('worked')
+    await this.setState({ inputKey: '', value: '' })
     history.push('/main');
+    //clear the rest of the state 
+    //add an alert that it was successful 
   }
 
+  getSecret = async () => {
+    const { inputKey, dappStorage } = this.state;
+    
+    const displayValue = await dappStorage.public.get(inputKey)
+    await this.setState({ displayValue })    
+    await console.log(this.state.displayValue)
+  }
+
+  //create new space for passwords 
   createNewSpace = async () => {
     const { inputKey, ethAddress, box } = this.state;
     console.log('clicked')
@@ -91,8 +109,12 @@ class App extends Component {
     console.log(await Box.listSpaces(ethAddress))
   }
 
-  changeSelectedSpace = (event) => {
-    this.setState({ selectedSpace: event.target.value});
+  //TODO make the above a modal or side bar 
+
+  //change the selected space that you are taking actions on
+  changeSelectedSpace = async (event) => {
+    await this.setState({ selectedSpace: event.target.value});
+    await console.log(this.state.selectedSpace)
   }
 
   // createNewSpace = async () => {
@@ -105,23 +127,29 @@ class App extends Component {
   //   }
   // }
 
+  //delete selected secret
   deleteSecret = async () => {
     const { inputKey, dappStorage } = this.state;
 
+    //TODO: add new input key to delete once selected
     try {
       await dappStorage.public.remove(inputKey);
     } catch(err) {
       console.log(err);
     }
   }
+
+  //TODO
+  //autofill key values 
+  //alerts for success and failure on all the actions 
+  //re render for form submits 
  
   render() {
-    const { isAppReady, userProfile, inputKey, inputValue, ethAddress, box, privateLogs, spaceOptions, dappStorage, selectedSpace } = this.state;
+    const { isAppReady, userProfile, inputKey, inputValue, displayValue, ethAddress, box, privateLogs, spaceOptions, dappStorage, selectedSpace } = this.state;
 
     return (
       <div className="App">
         {isAppReady && (<React.Fragment>
-
           <Switch>
             <Route
               exact
@@ -145,11 +173,14 @@ class App extends Component {
                   inputValue={inputValue}
                   dappStorage={dappStorage}
                   selectedSpace={selectedSpace}
+                  displayValue={displayValue}
                   onSubmit={this.onSubmit}
                   handleValueChange={this.handleValueChange}
+                  handleNameChange={this.handleNameChange}
                   handleKeyChange={this.handleKeyChange}
                   createNewSpace={this.createNewSpace}
                   changeSelectedSpace={this.changeSelectedSpace}
+                  getSecret={this.getSecret}
                   deleteSecret={this.deleteSecret}
                 />
               )}

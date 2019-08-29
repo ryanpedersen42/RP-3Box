@@ -10,8 +10,8 @@ const Header = () => {
       3DropBox
       </div>
       <div className='options'>
-        <a to='/' href='mygithubrepo'>github</a>
-        <div to='/'>sign out</div>
+        <a to='/' className='option' href='mygithubrepo'>GitHub</a>
+        <div className='option' to='/'>Sign Out</div>
       </div>
     </div>
   )
