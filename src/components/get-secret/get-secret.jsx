@@ -5,7 +5,6 @@ import FormInput from '../form-input/form-input';
 import './get-secret.styles.scss';
 
 class GetSecret extends Component {
-  // ({ getSecret, displayValue, handleKeyChange }) => {
     handleChange = (e) => {
       this.props.handleKeyChange(e.target.value);
     }
@@ -13,9 +12,9 @@ class GetSecret extends Component {
     copyToClipboard = (e) => {
       this.input.select();
       document.execCommand('copy');
-      // I prefer to not show the the whole text area selected.
       e.target.focus();
     }
+
     render() {
       const { displayValue, getSecret } = this.props;
       return (
@@ -23,16 +22,16 @@ class GetSecret extends Component {
         <h3 className='section-header'>Get Secret</h3>
         <FormInput
           onChange={this.handleChange}
-          label='new space'
+          label='which secret do you want?'
         />
         <button className='custom-button padded-button' onClick={getSecret}>get secret</button> 
           {
             (displayValue.length > 1) && document.queryCommandSupported('copy') &&
             <>
-            <div>
+            <div className='padded-button'>
               <button className='custom-button padded-button' onClick={this.copyToClipboard}>Copy</button> 
             </div>
-            <div className='display-value'>password: {displayValue}</div>
+            <div className='display-value'>secret: {displayValue}</div>
             <input
             ref={(input) => this.input = input}
             value={displayValue}

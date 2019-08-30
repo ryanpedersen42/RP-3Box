@@ -1,40 +1,75 @@
-import React from 'react';
+import React, { Component } from 'react';
 import FormInput from '../form-input/form-input';
 
-const InputForm = ({ onSubmit, inputValue, handleKeyChange, handleValueChange, inputKey, deleteSecret }) => {
+import './input-form.styles.scss'
 
-  const handleChange1 = (e) => {
+
+class InputForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showAlert: false
+    }
+  }
+  handleChange1 = (e) => {
+    const { handleKeyChange } = this.props;
     handleKeyChange(e.target.value);
   }
-
-  const handleChange2 = (e) => {
+  
+  handleChange2 = (e) => {
+    const { handleValueChange } = this.props;
     handleValueChange(e.target.value);
   }
-  return (
-    <div>
-      <h3 className='section-header'>Add New Secret</h3>
-        <FormInput 
-          name='key' 
-          label='key'
-          input={inputKey}
-          onChange={handleChange1}
-          required
-          />
-        <FormInput 
-          name='value' 
-          label='value'
-          value={inputValue}
-          onChange={handleChange2}
-          required
-          />
+  
+  
+  showAlert = () => {
+    const { onSubmit } = this.props;
+
+    onSubmit()
+
+    this.setState({ showAlert: true})
+  
+    setTimeout(() => {
+      this.setState({ showAlert: false });
+    }, 1000);
+  }
+  
+  render() {
+    const { inputValue, inputKey } = this.props;
+    const { showAlert } = this.state;
+    return (
+      <div>
+        <h3 className='section-header'>Add New Secret</h3>
+          <FormInput 
+            name='key' 
+            label='key'
+            input={inputKey}
+            onChange={this.handleChange1}
+            required
+            />
+          <FormInput 
+            name='value' 
+            label='value'
+            value={inputValue}
+            onChange={this.handleChange2}
+            required
+            />
             <button 
               className='custom-button'
-              onClick={onSubmit}
+              onClick={this.showAlert}
             >
               Submit
             </button>
-    </div>
-  )
+            { 
+            showAlert &&
+            <div className='submission-alert'>
+              Successfully Submitted!
+            </div>
+            }
+      </div>
+    )
+
+  }
 }
 
 export default InputForm;

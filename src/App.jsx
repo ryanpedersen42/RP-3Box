@@ -19,10 +19,8 @@ class App extends Component {
       ethAddress: '',
       userProfile: {},
       isAppReady: false,
-      privateSpaces: [],
       spaceOptions: [],      
       selectedSpace: '',
-      privateLogs: [],
       dappStorage: [],
       inputKey: '',
       inputValue: '',
@@ -62,6 +60,7 @@ class App extends Component {
 
     // set all to state and continue
     await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[2] });
+
     history.push('/main');
   }
 
@@ -84,29 +83,38 @@ class App extends Component {
     const { history } = this.props;
     const { inputKey, value, dappStorage } = this.state;
 
-    await dappStorage.public.set(inputKey, value)
-    console.log('worked')
-    await this.setState({ inputKey: '', value: '' })
+    //set key / value pair from input form
+    try {
+      await dappStorage.private.set(inputKey, value)
+    } catch(err) {
+      console.log(err)
+    }
+    //clear state
+    await this.setState({ inputKey: '', inputValue: '' })
+
+    //make sure we are home (if we end up adding more pages)
     history.push('/main');
-    //clear the rest of the state 
+
     //add an alert that it was successful 
   }
 
   getSecret = async () => {
     const { inputKey, dappStorage } = this.state;
     
-    const displayValue = await dappStorage.public.get(inputKey)
+    const displayValue = await dappStorage.private.get(inputKey)
+
     await this.setState({ displayValue })    
-    await console.log(this.state.displayValue)
   }
 
   //create new space for passwords 
   createNewSpace = async () => {
-    const { inputKey, ethAddress, box } = this.state;
-    console.log('clicked')
+    const { inputKey, box } = this.state;
 
-    await box.openSpace(inputKey)
-    console.log(await Box.listSpaces(ethAddress))
+    try {
+      await box.openSpace(inputKey)
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   //TODO make the above a modal or side bar 
@@ -133,7 +141,7 @@ class App extends Component {
 
     //TODO: add new input key to delete once selected
     try {
-      await dappStorage.public.remove(inputKey);
+      await dappStorage.private.remove(inputKey);
     } catch(err) {
       console.log(err);
     }
@@ -141,11 +149,12 @@ class App extends Component {
 
   //TODO
   //autofill key values 
-  //alerts for success and failure on all the actions 
+  //more alerts...
+  //delete secret
   //re render for form submits 
  
   render() {
-    const { isAppReady, userProfile, inputKey, inputValue, displayValue, ethAddress, box, privateLogs, spaceOptions, dappStorage, selectedSpace } = this.state;
+    const { isAppReady, userProfile, inputKey, inputValue, displayValue, ethAddress, box, spaceOptions, dappStorage, selectedSpace } = this.state;
 
     return (
       <div className="App">
@@ -167,7 +176,6 @@ class App extends Component {
                   ethAddress={ethAddress}
                   userProfile={userProfile}
                   box={box}
-                  privateLogs={privateLogs}
                   spaceOptions={spaceOptions}
                   inputKey={inputKey}
                   inputValue={inputValue}
