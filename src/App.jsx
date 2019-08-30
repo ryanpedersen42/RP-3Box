@@ -26,6 +26,7 @@ class App extends Component {
       inputValue: '',
       newSpaceName: '',
       displayValue: '',
+      selectedRouterComponent: '',
     };
   }
 
@@ -69,6 +70,7 @@ class App extends Component {
     this.setState({inputKey: key})
   } 
 
+  //to create new space
   handleNameChange = (name) => {
     this.setState({newSpaceName: name})
   }
@@ -122,18 +124,7 @@ class App extends Component {
   //change the selected space that you are taking actions on
   changeSelectedSpace = async (event) => {
     await this.setState({ selectedSpace: event.target.value});
-    await console.log(this.state.selectedSpace)
   }
-
-  // createNewSpace = async () => {
-  //   const { keyValue, box } = this.state;
-
-  //   try {
-  //     await box.openSpace(keyValue)
-  //   } catch(err) {
-  //     console.log(err)
-  //   }
-  // }
 
   //delete selected secret
   deleteSecret = async () => {
@@ -173,6 +164,7 @@ class App extends Component {
               path='/main'
               render={() => (
                 <MainPage 
+                  //state
                   ethAddress={ethAddress}
                   userProfile={userProfile}
                   box={box}
@@ -182,6 +174,8 @@ class App extends Component {
                   dappStorage={dappStorage}
                   selectedSpace={selectedSpace}
                   displayValue={displayValue}
+                  
+                  //functions
                   onSubmit={this.onSubmit}
                   handleValueChange={this.handleValueChange}
                   handleNameChange={this.handleNameChange}

@@ -5,6 +5,12 @@ import FormInput from '../form-input/form-input';
 import './get-secret.styles.scss';
 
 class GetSecret extends Component {
+  constructor() {
+    super();
+    this.state = {
+      hidden: true
+    }
+  }
     handleChange = (e) => {
       this.props.handleKeyChange(e.target.value);
     }
@@ -15,11 +21,22 @@ class GetSecret extends Component {
       e.target.focus();
     }
 
+    toggleThisComponent = () => {
+      const { hidden } = this.state;
+      this.setState({ hidden: !hidden })
+    }
+
     render() {
       const { displayValue, getSecret } = this.props;
+      const { hidden } = this.state;
       return (
       <div>
-        <h3 className='section-header'>Get Secret</h3>
+        <h3 className='section-header' onClick={this.toggleThisComponent}>Get Secret</h3>
+        { 
+          hidden ? 
+          null 
+          : 
+          <>
         <FormInput
           onChange={this.handleChange}
           label='which secret do you want?'
@@ -38,10 +55,13 @@ class GetSecret extends Component {
           />
           </>
         }
+        </>
+      }
       </div>
-      )
-    }
-} 
+    )
+
+  }
+}
 
 
 export default GetSecret;
