@@ -26,7 +26,6 @@ class App extends Component {
       inputValue: '',
       newSpaceName: '',
       displayValue: '',
-      selectedRouterComponent: '',
     };
   }
 
@@ -55,6 +54,8 @@ class App extends Component {
 
     //TODO: make this dymanic 
     const dappStorage = await box.openSpace(spaceOptions[2])
+
+    // await console.log(spaceOptions[2])
     
     //promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
@@ -123,7 +124,16 @@ class App extends Component {
 
   //change the selected space that you are taking actions on
   changeSelectedSpace = async (event) => {
+    const { box } = this.state;
     await this.setState({ selectedSpace: event.target.value});
+
+    let testValue = this.state.selectedSpace;
+
+    const dappStorage = await box.openSpace(testValue)
+
+    await this.setState({ dappStorage })
+    await console.log(this.state.dappStorage)
+
   }
 
   //delete selected secret

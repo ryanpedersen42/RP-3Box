@@ -25,12 +25,6 @@ const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChang
           changeSelectedSpace={changeSelectedSpace}
           selectedSpace={selectedSpace}
          />
-         <div className='input-form'>
-         <CreateSpace 
-          handleNameChange={handleNameChange}
-          createNewSpace={createNewSpace}
-          />
-          </div>
           <div className='input-form'>
           <GetSecret
           getSecret={getSecret}
@@ -48,6 +42,12 @@ const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChang
             deleteSecret={deleteSecret}
           />
         </div>
+         <div className='input-form'>
+         <CreateSpace 
+          handleNameChange={handleNameChange}
+          createNewSpace={createNewSpace}
+          />
+          </div>
       </div>
   </React.Fragment>
 );
