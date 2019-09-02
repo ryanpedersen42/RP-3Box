@@ -2,7 +2,7 @@ import React from 'react';
 
 import './dropdown-selector.styles.scss';
 
-const DropDown = ({ spaceOptions, selectedSpace, changeSelectedSpace }) => (
+const DropdownSelector = ({ spaceOptions, selectedSpace, changeSelectedSpace }) => (
   <div>
     <p className='instructions'>Pick your 3box Space</p>
     <select className='drop-down' defaultValue={selectedSpace} onChange={event => changeSelectedSpace(event)}>
@@ -13,6 +13,6 @@ const DropDown = ({ spaceOptions, selectedSpace, changeSelectedSpace }) => (
       })} 
     </select>
   </div>
-)
+);
 
-export default DropDown;
+export default DropdownSelector;

@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ProfileHover from 'profile-hover';
 
+import DropdownSelector from '../../components/dropdown-selector/dropdown-selector';
 import InputForm from '../../components/input-form/input-form';
 import Header from '../../components/header/header';
-import DropDown from '../../components/dropdown-selector/dropdown-selector';
-import CreateSpace from '../../components/create-new-space/create-new-space';
+import CreateNewSpace from '../../components/create-new-space/create-new-space';
 import GetSecret from '../../components/get-secret/get-secret';
 
 import './main-page.styles.scss';
 
-const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChange, displayValue, getSecret, handleValueChange, value, inputKey, onSubmit, spaceOptions, changeSelectedSpace, selectedSpace, dappStorage, deleteSecret }) => (
-  <React.Fragment>
+const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChange, displayValue, getSecret, handleValueChange, inputValue, inputKey, onSubmit, spaceOptions, changeSelectedSpace, selectedSpace, deleteSecret }) => (
+  <Fragment>
       <Header />
       <div className='main-page'>
         <div className='profile-hover'>
@@ -20,36 +20,35 @@ const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChang
             orientation='left'
           />
         </div>
-        <DropDown 
+        <DropdownSelector 
           spaceOptions={spaceOptions}
           changeSelectedSpace={changeSelectedSpace}
           selectedSpace={selectedSpace}
          />
-          <div className='input-form'>
+          <div className='main-page-section'>
           <GetSecret
-          getSecret={getSecret}
-          handleKeyChange={handleKeyChange}
-          displayValue={displayValue}
+            getSecret={getSecret}
+            handleKeyChange={handleKeyChange}
+            displayValue={displayValue}
            />
           </div>
-         <div className='input-form'>
+         <div className='main-page-section'>
           <InputForm 
             handleValueChange={handleValueChange}
             handleKeyChange={handleKeyChange}
             onSubmit={onSubmit}
             inputKey={inputKey}
-            value={value}
-            deleteSecret={deleteSecret}
+            inputValue={inputValue}
           />
         </div>
-         <div className='input-form'>
-         <CreateSpace 
-          handleNameChange={handleNameChange}
-          createNewSpace={createNewSpace}
-          />
+         <div className='main-page-section'>
+          <CreateNewSpace 
+            handleNameChange={handleNameChange}
+            createNewSpace={createNewSpace}
+            />
           </div>
       </div>
-  </React.Fragment>
+  </Fragment>
 );
 
 export default MainPage;

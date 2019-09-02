@@ -3,17 +3,17 @@ import FormInput from '../form-input/form-input';
 
 import './create-new-space.styles.scss';
 
-class CreateSpace extends Component {
+class CreateNewSpace extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       hidden: true
     }
   }
+
   handleChange = (e) => {
-    const { handleKeyChange } = this.props;
-    handleKeyChange(e.target.value);
+    const { handleNameChange } = this.props;
+    handleNameChange(e.target.value);
   }
   
   toggleThisComponent = () => {
@@ -26,8 +26,9 @@ class CreateSpace extends Component {
     const { hidden } = this.state;
     return (
     <div>
-      <h3 className='section-header' onClick={this.toggleThisComponent}>Create New Space</h3>
-
+      <h3 className='section-header' onClick={this.toggleThisComponent}>
+        Create New Space
+      </h3>
       { 
           hidden ? 
           null 
@@ -37,7 +38,9 @@ class CreateSpace extends Component {
               onChange={this.handleChange}
               label='new space'
             />
-            <button className='custom-button' onClick={createNewSpace}>create new space</button> 
+            <button className='custom-button' onClick={createNewSpace}>
+              create new space
+            </button> 
         </>
       }
     </div> 
@@ -45,4 +48,4 @@ class CreateSpace extends Component {
   }
 }
 
-export default CreateSpace;
+export default CreateNewSpace;

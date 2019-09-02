@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   Switch,
   Route,
@@ -22,9 +22,9 @@ class App extends Component {
       spaceOptions: [],      
       selectedSpace: '',
       dappStorage: [],
+      newSpaceName: '',
       inputKey: '',
       inputValue: '',
-      newSpaceName: '',
       displayValue: '',
     };
   }
@@ -38,10 +38,10 @@ class App extends Component {
     this.setState({ isAppReady: true });
   }
 
-  handleLogin = async () => {
+  handleAuth = async () => {
     const { history } = this.props
 
-    //web3 actions to authenticate with metamask or other provider
+    // web3 actions to authenticate with metamask or other provider
     const ethAddresses = await window.ethereum.enable();
     const ethAddress = ethAddresses[0];
     
@@ -49,16 +49,18 @@ class App extends Component {
     const box = await Box.openBox(ethAddress, window.ethereum, {});
     const userProfile = await Box.getProfile(ethAddress);
 
-    //get list of spaces and open a space
-    const spaceOptions = await Box.listSpaces(ethAddress)
+    const myDefault = await Box.getSpace(ethAddress, 'testDapp')
+    await console.log('default profile', myDefault.defaultProfile)
 
-    //TODO: make this dymanic 
-    const dappStorage = await box.openSpace(spaceOptions[2])
+    // get list of spaces and open a space
+    const spaceOptions = await Box.listSpaces(ethAddress);
 
-    // await console.log(spaceOptions[2])
+    //change to [0] when done testing
+    const dappStorage = await box.openSpace(spaceOptions[2]);
     
-    //promise resolution.. waiting from 3Box onSyncDone confirmation
+    // promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
+
 
     // set all to state and continue
     await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[2] });
@@ -66,36 +68,48 @@ class App extends Component {
     history.push('/main');
   }
 
-  //change the key field for input
-  handleKeyChange = (key) => {
-    this.setState({inputKey: key})
-  } 
+  // change space that actions are being taken on
+  changeSelectedSpace = async (event) => {
+    const { box } = this.state;
 
-  //to create new space
-  handleNameChange = (name) => {
-    this.setState({newSpaceName: name})
+    const selectedSpace = event.target.value;
+
+    const dappStorage = await box.openSpace(selectedSpace);
+
+    await this.setState({ selectedSpace, dappStorage });
   }
 
-  //chanve value field for input
-  handleValueChange = (value) => {
-    this.setState({value: value})
+  // to create new space
+  handleNameChange = (name) => {
+    this.setState({newSpaceName: name});
+  }
+  
+  //functions for 
+  // change the key field for input
+  handleKeyChange = (key) => {
+    this.setState({inputKey: key});
   } 
 
-  //onsubmit new input / key pair
+  // change value field for input
+  handleValueChange = (value) => {
+    this.setState({inputValue: value});
+  } 
+
+  // submit new key / value pair from input-form
   onSubmit = async () => {
     const { history } = this.props;
-    const { inputKey, value, dappStorage } = this.state;
+    const { inputKey, inputValue, dappStorage } = this.state;
 
-    //set key / value pair from input form
+    // set private key / value pair from input form
     try {
-      await dappStorage.private.set(inputKey, value)
+      await dappStorage.private.set(inputKey, inputValue);
     } catch(err) {
-      console.log(err)
+      console.log(err);
     }
-    //clear state
-    await this.setState({ inputKey: '', inputValue: '' })
+    // clear state
+    await this.setState({ inputKey: '', inputValue: '' });
 
-    //make sure we are home (if we end up adding more pages)
+    // make sure we go to home page (if we end up adding more pages)
     history.push('/main');
 
     //add an alert that it was successful 
@@ -109,34 +123,18 @@ class App extends Component {
     await this.setState({ displayValue })    
   }
 
-  //create new space for passwords 
+  // create new space 
   createNewSpace = async () => {
     const { inputKey, box } = this.state;
 
     try {
-      await box.openSpace(inputKey)
+      await box.openSpace(inputKey);
     } catch(err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
-  //TODO make the above a modal or side bar 
-
-  //change the selected space that you are taking actions on
-  changeSelectedSpace = async (event) => {
-    const { box } = this.state;
-    await this.setState({ selectedSpace: event.target.value});
-
-    let testValue = this.state.selectedSpace;
-
-    const dappStorage = await box.openSpace(testValue)
-
-    await this.setState({ dappStorage })
-    await console.log(this.state.dappStorage)
-
-  }
-
-  //delete selected secret
+  // delete selected secret
   deleteSecret = async () => {
     const { inputKey, dappStorage } = this.state;
 
@@ -149,26 +147,27 @@ class App extends Component {
   }
 
   //TODO
-  //autofill key values 
   //more alerts...
   //delete secret
   //re render for form submits 
+  //add blockies for non registered accounts // update profiles page
  
   render() {
-    const { isAppReady, userProfile, inputKey, inputValue, displayValue, ethAddress, box, spaceOptions, dappStorage, selectedSpace } = this.state;
+    const { isAppReady, inputKey, inputValue, displayValue, ethAddress, spaceOptions, selectedSpace } = this.state;
 
     return (
-      <div className="App">
-        {isAppReady && (<React.Fragment>
+      <div className='App'>
+        {isAppReady && (<Fragment>
           <Switch>
             <Route
               exact
               path='/'
               render={() => (
-              <AuthPage handleLogin={this.handleLogin} />
+              <AuthPage 
+                handleAuth={this.handleAuth} 
+              />
               )}
             />
-
             <Route
               exact
               path='/main'
@@ -176,12 +175,9 @@ class App extends Component {
                 <MainPage 
                   //state
                   ethAddress={ethAddress}
-                  userProfile={userProfile}
-                  box={box}
                   spaceOptions={spaceOptions}
                   inputKey={inputKey}
                   inputValue={inputValue}
-                  dappStorage={dappStorage}
                   selectedSpace={selectedSpace}
                   displayValue={displayValue}
                   
@@ -198,7 +194,7 @@ class App extends Component {
               )}
             />
           </Switch>
-        </React.Fragment>)}
+        </Fragment>)}
       </div>
     );
   }
