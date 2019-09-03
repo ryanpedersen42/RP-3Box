@@ -49,14 +49,14 @@ class App extends Component {
     const spaceOptions = await Box.listSpaces(ethAddress);
 
     //change to [0] when done testing
-    const dappStorage = await box.openSpace(spaceOptions[2]);
+    const dappStorage = await box.openSpace(spaceOptions[0]);
     
     // promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
 
 
     // set all to state and continue
-    await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[2] });
+    await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[0] });
 
     history.push('/main');
   }
