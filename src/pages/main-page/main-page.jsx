@@ -9,9 +9,11 @@ import GetSecret from '../../components/get-secret/get-secret';
 
 import './main-page.styles.scss';
 
-const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChange, displayValue, getSecret, handleValueChange, inputValue, inputKey, onSubmit, spaceOptions, changeSelectedSpace, selectedSpace, deleteSecret }) => (
+const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChange, displayValue, handleLogout, getSecret, handleValueChange, inputValue, inputKey, onSubmit, spaceOptions, changeSelectedSpace, selectedSpace, deleteSecret }) => (
   <Fragment>
-      <Header />
+      <Header
+        handleLogout={handleLogout}
+       />
       <div className='main-page'>
         <div className='profile-hover'>
           <ProfileHover 

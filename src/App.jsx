@@ -46,11 +46,8 @@ class App extends Component {
     const ethAddress = ethAddresses[0];
     
     // authenticate and get profile data
-    const box = await Box.openBox(ethAddress, window.ethereum, {});
-    const userProfile = await Box.getProfile(ethAddress);
-
-    const myDefault = await Box.getSpace(ethAddress, 'testDapp')
-    await console.log('default profile', myDefault.defaultProfile)
+    const box = await Box.openBox(ethAddress, window.ethereum, {})
+    const userProfile = await Box.getProfile(ethAddress)
 
     // get list of spaces and open a space
     const spaceOptions = await Box.listSpaces(ethAddress);
@@ -138,7 +135,6 @@ class App extends Component {
   deleteSecret = async () => {
     const { inputKey, dappStorage } = this.state;
 
-    //TODO: add new input key to delete once selected
     try {
       await dappStorage.private.remove(inputKey);
     } catch(err) {
@@ -146,6 +142,11 @@ class App extends Component {
     }
   }
 
+  handleLogout = async () => {
+    const { box } = this.state;
+
+    await box.logout();
+  }
   //TODO
   //more alerts...
   //delete secret
@@ -190,6 +191,7 @@ class App extends Component {
                   changeSelectedSpace={this.changeSelectedSpace}
                   getSecret={this.getSecret}
                   deleteSecret={this.deleteSecret}
+                  handleLogout={this.handleLogout}
                 />
               )}
             />

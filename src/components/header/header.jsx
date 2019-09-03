@@ -2,14 +2,14 @@ import React from 'react';
 
 import './header.styles.scss';
 
-const Header = () => (
+const Header = ({ handleLogout }) => (
   <div className='header'>
     <div className='logo'>
-      S3cret Keep3r
+      s3cret keep3r
     </div>
     <div className='options'>
       <a className='option' href='https://github.com/ryanpedersen42/RP-3Box'>GitHub</a>
-      <div className='option' to='/'>Sign Out</div>
+      <div className='option' onClick={handleLogout} >Sign Out</div>
     </div>
   </div>
 );
