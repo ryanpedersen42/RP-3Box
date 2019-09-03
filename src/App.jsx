@@ -179,7 +179,7 @@ class App extends Component {
                   inputKey={inputKey}
                   inputValue={inputValue}
                   selectedSpace={selectedSpace}
-                  displayValue={displayValue}
+                  displayValue={displayValue} 
                   
                   //functions
                   onSubmit={this.onSubmit}
