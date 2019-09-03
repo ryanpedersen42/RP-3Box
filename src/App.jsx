@@ -1,9 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
-  Switch,
-  Route,
-  withRouter
-} from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 import AuthPage from './pages/auth/auth-page';
 import MainPage from './pages/main-page/main-page';
