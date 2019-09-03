@@ -54,7 +54,6 @@ class App extends Component {
     // promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
 
-
     // set all to state and continue
     await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[0] });
 
@@ -68,6 +67,9 @@ class App extends Component {
     const selectedSpace = event.target.value;
 
     const dappStorage = await box.openSpace(selectedSpace);
+
+    // promise resolution.. waiting from 3Box onSyncDone confirmation
+    await new Promise((resolve, reject) => box.onSyncDone(resolve));
 
     await this.setState({ selectedSpace, dappStorage });
   }
