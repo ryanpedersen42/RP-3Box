@@ -77,7 +77,6 @@ class App extends Component {
     this.setState({newSpaceName: name});
   }
   
-  //functions for 
   // change the key field for input
   handleKeyChange = (key) => {
     this.setState({inputKey: key});
@@ -101,13 +100,9 @@ class App extends Component {
     }
     // clear state
     await this.setState({ inputKey: '', inputValue: '' });
-
-    // make sure we go to home page (if we end up adding more pages)
-    history.push('/main');
-
-    //add an alert that it was successful 
   }
 
+  //get value for associated key
   getSecret = async () => {
     const { inputKey, dappStorage } = this.state;
     
@@ -143,11 +138,11 @@ class App extends Component {
 
     await box.logout();
   }
+
   //TODO
   //more alerts...
   //delete secret
   //re render for form submits 
-  //add blockies for non registered accounts // update profiles page
  
   render() {
     const { isAppReady, inputKey, inputValue, displayValue, ethAddress, spaceOptions, selectedSpace } = this.state;
@@ -196,6 +191,6 @@ class App extends Component {
       </div>
     );
   }
-}
+};
 
 export default withRouter(App);
