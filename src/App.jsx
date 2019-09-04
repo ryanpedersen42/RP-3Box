@@ -42,8 +42,8 @@ class App extends Component {
     const ethAddress = ethAddresses[0];
     
     // authenticate and get profile data
-    const box = await Box.openBox(ethAddress, window.ethereum, {})
-    const userProfile = await Box.getProfile(ethAddress)
+    const box = await Box.openBox(ethAddress, window.ethereum, {});
+    const userProfile = await Box.getProfile(ethAddress);
 
     // get list of spaces and open a space
     const spaceOptions = await Box.listSpaces(ethAddress);
@@ -136,9 +136,11 @@ class App extends Component {
   }
 
   handleLogout = async () => {
+    const { history } = this.props;
     const { box } = this.state;
 
     await box.logout();
+    history.push('/');
   }
 
   //TODO
@@ -193,6 +195,6 @@ class App extends Component {
       </div>
     );
   }
-};
+}
 
 export default withRouter(App);

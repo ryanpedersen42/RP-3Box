@@ -39,38 +39,38 @@ class GetSecret extends Component {
           null 
           : 
           <Fragment>
-        <FormInput
-          handleChange={this.handleChange}
-          label='which secret do you want?'
-        />
-        <button 
-          className='custom-button padded-button' 
-          onClick={getSecret}
-        >
-          get secret
-        </button> 
-          {
-            (displayValue.length > 1) && document.queryCommandSupported('copy') &&
-            <Fragment>
-              <div className='padded-button'>
-                <button 
-                  className='custom-button padded-button' 
-                  onClick={this.copyToClipboard} 
-                >
-                  Copy
-                </button> 
-              </div>
-              <div className='display-value'>
-                secret: {displayValue}
-              </div>
-              <input
-              ref={(input) => this.input = input}
-              value={displayValue}
-            />
+          <FormInput
+            handleChange={this.handleChange}
+            label='which secret do you want?'
+          />
+          <button 
+            className='custom-button padded-button' 
+            onClick={getSecret}
+          >
+            get secret
+          </button> 
+            {
+              (displayValue.length > 1) && document.queryCommandSupported('copy') &&
+              <Fragment>
+                <div className='padded-button'>
+                  <button 
+                    className='custom-button padded-button' 
+                    onClick={this.copyToClipboard} 
+                  >
+                    Copy
+                  </button> 
+                </div>
+                <div className='display-value'>
+                  secret: {displayValue}
+                </div>
+                <input
+                ref={(input) => this.input = input}
+                defaultValue={displayValue}
+              />
+            </Fragment>
+          }
           </Fragment>
         }
-        </Fragment>
-      }
       </div>
     )
   }
