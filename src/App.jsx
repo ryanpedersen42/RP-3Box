@@ -122,6 +122,9 @@ class App extends Component {
     } catch(err) {
       console.log(err);
     }
+
+    // promise resolution.. waiting from 3Box onSyncDone confirmation
+    await new Promise((resolve, reject) => box.onSyncDone(resolve));
   }
 
   // delete selected secret
