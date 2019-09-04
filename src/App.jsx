@@ -43,17 +43,18 @@ class App extends Component {
     
     // authenticate and get profile data
     const box = await Box.openBox(ethAddress, window.ethereum, {});
+    
+    // promise resolution.. waiting from 3Box onSyncDone confirmation
+    await new Promise((resolve, reject) => box.onSyncDone(resolve));
+    
     const userProfile = await Box.getProfile(ethAddress);
 
     // get list of spaces and open a space
     const spaceOptions = await Box.listSpaces(ethAddress);
-
+    
     //change to [0] when done testing
     const dappStorage = await box.openSpace(spaceOptions[0]);
     
-    // promise resolution.. waiting from 3Box onSyncDone confirmation
-    await new Promise((resolve, reject) => box.onSyncDone(resolve));
-
     // set all to state and continue
     await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[0] });
 
@@ -105,6 +106,7 @@ class App extends Component {
   getSecret = async () => {
     const { inputKey, dappStorage } = this.state;
     
+    //returns string || object.. undefined if no such key
     const displayValue = await dappStorage.private.get(inputKey)
 
     await this.setState({ displayValue })    
