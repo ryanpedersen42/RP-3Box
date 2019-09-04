@@ -27,14 +27,14 @@ const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChang
           changeSelectedSpace={changeSelectedSpace}
           selectedSpace={selectedSpace}
          />
-          <div className='main-page-section'>
-          <GetSecret
-            getSecret={getSecret}
-            handleKeyChange={handleKeyChange}
-            displayValue={displayValue}
-           />
-          </div>
-         <div className='main-page-section'>
+        <div className='main-page-section'>
+        <GetSecret
+          getSecret={getSecret}
+          handleKeyChange={handleKeyChange}
+          displayValue={displayValue}
+          />
+        </div>
+        <div className='main-page-section'>
           <InputForm 
             handleValueChange={handleValueChange}
             handleKeyChange={handleKeyChange}
@@ -47,8 +47,8 @@ const MainPage = ({ ethAddress, handleKeyChange, createNewSpace, handleNameChang
           <CreateNewSpace 
             handleNameChange={handleNameChange}
             createNewSpace={createNewSpace}
-            />
-          </div>
+          />
+        </div>
       </div>
   </Fragment>
 );
