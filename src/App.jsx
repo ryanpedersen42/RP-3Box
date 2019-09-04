@@ -68,9 +68,6 @@ class App extends Component {
 
     const dappStorage = await box.openSpace(selectedSpace);
 
-    // promise resolution.. waiting from 3Box onSyncDone confirmation
-    await new Promise((resolve, reject) => box.onSyncDone(resolve));
-
     await this.setState({ selectedSpace, dappStorage });
   }
 
@@ -122,9 +119,6 @@ class App extends Component {
     } catch(err) {
       console.log(err);
     }
-
-    // promise resolution.. waiting from 3Box onSyncDone confirmation
-    await new Promise((resolve, reject) => box.onSyncDone(resolve));
   }
 
   // delete selected secret
