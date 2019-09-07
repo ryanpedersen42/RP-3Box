@@ -13,7 +13,6 @@ class App extends Component {
     this.state = {
       box: null,
       ethAddress: '',
-      userProfile: {},
       isAppReady: false,
       spaceOptions: [],      
       selectedSpace: '',
@@ -47,8 +46,6 @@ class App extends Component {
     // promise resolution.. waiting from 3Box onSyncDone confirmation
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
     
-    const userProfile = await Box.getProfile(ethAddress);
-
     // get list of spaces and open a space
     const spaceOptions = await Box.listSpaces(ethAddress);
     
@@ -56,7 +53,7 @@ class App extends Component {
     const dappStorage = await box.openSpace(spaceOptions[0]);
     
     // set all to state and continue
-    await this.setState({ box, userProfile, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[0] });
+    await this.setState({ box, ethAddress, dappStorage, spaceOptions, selectedSpace: spaceOptions[0] });
 
     history.push('/main');
   }
@@ -89,7 +86,6 @@ class App extends Component {
 
   // submit new key / value pair from input-form
   onSubmit = async () => {
-    const { history } = this.props;
     const { inputKey, inputValue, dappStorage } = this.state;
 
     // set private key / value pair from input form
@@ -109,7 +105,7 @@ class App extends Component {
     //returns string || object.. undefined if no such key
     const displayValue = await dappStorage.private.get(inputKey)
 
-    await this.setState({ displayValue })    
+    await this.setState({ displayValue });
   }
 
   // create new space 
@@ -121,6 +117,9 @@ class App extends Component {
     } catch(err) {
       console.log(err);
     }
+    const dappStorage = await box.openSpace(inputKey);
+
+    await this.setState({ dappStorage });
   }
 
   // delete selected secret
