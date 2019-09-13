@@ -1,6 +1,6 @@
 # s3cret keep3r
  **More straightforward & simpler version of this [here](https://github.com/ryanpedersen42/s3cretkeep3er)
- **Associated blog post [here](https://medium.com/@ryanpedersen42/password-manager-with-3box-b6d6decf9fd1)
+ **Associated blog post [here](https://medium.com/@ryanpedersen42/password-manager-with-3box-b6d6decf9fd1) **
 
 This is an application to demo various actions that can be taken with the 3Box API. It's a password storage keeper, but can be used to store any "secret" key-value pairs.
 
